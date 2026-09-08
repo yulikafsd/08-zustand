@@ -1,34 +1,38 @@
 # NoteHub Application
 
-A responsive multi-page web application built with Next.js (App Router), TypeScript, and TanStack Query that allows users to manage personal notes, search by keywords, filter by categories using parallel routes, paginate through records, create notes with validation, and preview details using intercepted modal routes.
+A responsive multi-page web application built with Next.js (App Router), TypeScript, TanStack Query, and Zustand that allows users to manage personal notes, search by keywords, filter by categories using parallel routes, paginate through records, create notes with auto-saving draft state, and preview details using intercepted modal routes.
 
 ## 🚀 Live Demo
 
-[View Live App on Vercel](https://your-vercel-deployment-link.vercel.app/)
+[View Live App on Vercel](https://08-zustand-yu-za.vercel.app/)
 
 ## 🛠️ Tech Stack & Tools
 
 - **Next.js (App Router)** — React framework for server rendering, parallel and intercepted routing
 - **React** — UI library
+- **Zustand** — Lightweight client state management with `persist` middleware
 - **@tanstack/react-query** — Server-state management, SSR hydration, and data caching
 - **TypeScript** — Static typing
 - **Axios** — Promise-based HTTP client for API requests
-- **Formik & Yup** — Form handling and schema-based validation
 - **React Paginate** — Component for pagination navigation
 - **React Hot Toast** — Notifications for user feedback and error alerts
 - **Use-Debounce** — Debounced search input handler
 - **CSS Modules** — Scoped component styling
+- **next/font** — Optimized global typography with the Roboto font
 
 ## ✨ Features
 
-- **Advanced Routing & SSR**: Built using Next.js App Router with parallel routes, catch-all routing, and intercepting routes.
+- **SEO & Open Graph Optimization**: Comprehensive metadata coverage using static `metadata` and dynamic `generateMetadata` functions across all key routes, complete with Open Graph previews and Twitter card integration.
+- **Global Typography**: Pre-configured global Google Font (`Roboto`) using `next/font/google` for optimal web font delivery without layout shifts.
+- **Dedicated Note Creation Route**: Independent creation view (`/notes/action/create`) with isolated form workflows.
+- **Draft Persistence with Zustand**: Auto-saves in-progress note creation forms directly to `localStorage` via Zustand `persist` middleware, ensuring work is preserved across refreshes and page exits.
 - **Tag Filtering (Parallel Routes)**: Filter notes by categories (`/notes/filter/[...slug]`) with a persistent dynamic sidebar rendered via the `@sidebar` parallel slot without full page reloads.
 - **Modal Preview (Intercepting Routes)**: Intercepts `/notes/[id]` navigation to display note details in a modal dialog (`@modal/(.)notes/[id]`) over the current page while preserving the full-page view on direct link access or page reload.
-- **Custom 404 Page**: Handled via `not-found.tsx` for non-existent routes.
+- **Custom 404 Page**: Handled via `not-found.tsx` for non-existent routes with dedicated metadata.
 - **Server Prefetch & Hydration**: Prefetches initial note queries on the server via `prefetchQuery` and `HydrationBoundary` for fast initial loads without layout shifts.
 - **Search & Debounce**: Real-time keyword search with debounced query updates.
-- **Pagination**: Server-side page navigation with `keepPreviousData` from TanStack Query.
-- **Form Validation & Creation**: Modal form with Formik and Yup schema validation for title, content, and category tags.
+- **Pagination**: Server-side page navigation with seamless transitions.
+- **Native Form Handling**: Standard HTML forms integrated with action handlers and Zustand state synchronization.
 - **Dynamic Note Details**: Dedicated dynamic page (`/notes/[id]`) for direct navigation.
 - **State Management & Invalidation**: Automatic cache invalidation upon creating or deleting notes.
 - **Error & Loading States**: Native Next.js `loading.tsx` and `error.tsx` handlers for graceful fallback states.
@@ -43,8 +47,14 @@ A responsive multi-page web application built with Next.js (App Router), TypeScr
 │   │   └── (.)notes/
 │   │       └── [id]/
 │   │           ├── NotePreview.client.tsx
+│   │           ├── NotePreview.module.css
+│   │           ├── default.tsx
 │   │           └── page.tsx
 │   ├── notes/
+│   │   ├── action/
+│   │   │   └── create/
+│   │   │       ├── page.module.css
+│   │   │       └── page.tsx
 │   │   ├── filter/
 │   │   │   ├── @sidebar/
 │   │   │   │   ├── default.tsx
@@ -53,6 +63,7 @@ A responsive multi-page web application built with Next.js (App Router), TypeScr
 │   │   │   ├── [...slug]/
 │   │   │   │   ├── error.tsx
 │   │   │   │   ├── Notes.client.tsx
+│   │   │   │   ├── NotesPage.module.css
 │   │   │   │   └── page.tsx
 │   │   │   ├── layout.tsx
 │   │   │   └── LayoutNotes.module.css
@@ -97,7 +108,9 @@ A responsive multi-page web application built with Next.js (App Router), TypeScr
 ├── hooks/
 │   └── useNotes.ts
 ├── lib/
-│   └── api.ts
+│   ├── api.ts
+│   └── store/
+│       └── noteStore.ts
 ├── types/
 │   └── note.ts
 ├── .env.local
@@ -114,13 +127,13 @@ A responsive multi-page web application built with Next.js (App Router), TypeScr
 1. Clone the repository:
 
     ```bash
-    git clone [https://github.com/yulikafsd/07-routing-nextjs.git](https://github.com/yulikafsd/07-routing-nextjs.git)
+    git clone [https://github.com/yulikafsd/08-zustand.git](https://github.com/yulikafsd/08-zustand.git)
     ```
 
 2. Navigate to the project directory:
 
     ```bash
-    cd 07-routing-nextjs
+    cd 08-zustand
     ```
 
 3. Install dependencies:
