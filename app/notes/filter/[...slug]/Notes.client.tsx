@@ -4,12 +4,11 @@
 import { useState, useEffect } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { useDebouncedCallback } from 'use-debounce';
+import Link from 'next/link';
 
 /* Components */
 import SearchBox from '@/components/SearchBox/SearchBox';
 import NoteList from '@/components/NoteList/NoteList';
-import Modal from '@/components/Modal/Modal';
-import NoteForm from '@/components/NoteForm/NoteForm';
 import Pagination from '@/components/Pagination/Pagination';
 import ErrorMessage from '@/components/ErrorMessage/ErrorMessage';
 import Loading from '@/app/loading';
@@ -28,7 +27,6 @@ interface NotesClientProps {
 export default function NotesClient({ tag }: NotesClientProps) {
     const [search, setSearch] = useState<string>('');
     const [currentPage, setCurrentPage] = useState<number>(1);
-    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
     const { data, isFetching, isError } = useNotes(search, currentPage, tag);
 
@@ -57,9 +55,6 @@ export default function NotesClient({ tag }: NotesClientProps) {
         setCurrentPage(1);
     }, 300);
 
-    const openModal = () => setIsModalOpen(true);
-    const closeModal = () => setIsModalOpen(false);
-
     useEffect(() => {
         if (isNoSearchResults) {
             toast.error('No notes found for your request.', {
@@ -86,13 +81,9 @@ export default function NotesClient({ tag }: NotesClientProps) {
                         />
                     )
                 )}
-                <button
-                    type="button"
-                    className={css.button}
-                    onClick={openModal}
-                >
+                <Link className={css.button} href={'/notes/action/create'}>
                     Create note +
-                </button>
+                </Link>
             </header>
 
             {isError && (
@@ -113,11 +104,6 @@ export default function NotesClient({ tag }: NotesClientProps) {
                 ) : (
                     <NoteList notes={notes} />
                 ))}
-            {isModalOpen && (
-                <Modal onClose={closeModal}>
-                    <NoteForm onClose={closeModal} />
-                </Modal>
-            )}
         </div>
     );
 }

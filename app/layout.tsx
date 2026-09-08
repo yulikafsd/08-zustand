@@ -1,26 +1,36 @@
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
+import { Roboto } from 'next/font/google';
 import './globals.css';
 
 import TanStackProvider from '@/components/TanStackProvider/TanStackProvider';
 
-// app/layout.tsx
 import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
 
-const geistSans = Geist({
-    variable: '--font-geist-sans',
+const roboto = Roboto({
     subsets: ['latin'],
-});
-
-const geistMono = Geist_Mono({
-    variable: '--font-geist-mono',
-    subsets: ['latin'],
+    weight: ['400', '700'],
+    variable: '--font-roboto',
+    display: 'swap',
 });
 
 export const metadata: Metadata = {
-    title: 'NoteHub App',
-    description: 'Created by Yuliia Zahorovska',
+    title: 'NoteHub',
+    description: 'A simple and efficient note-taking application',
+    openGraph: {
+        title: 'NoteHub',
+        description: 'A simple and efficient note-taking application',
+        url: 'https://08-zustand-yu-za.vercel.app/',
+        images: [
+            {
+                url: 'https://ac.goit.global/fullstack/react/notehub-og-meta.jpg',
+                width: 1200,
+                height: 630,
+                alt: 'NoteHub Preview',
+            },
+        ],
+        type: 'website',
+    },
 };
 
 interface RootLayoutProps {
@@ -28,10 +38,13 @@ interface RootLayoutProps {
     modal: React.ReactNode;
 }
 
-export default function RootLayout({ children, modal }: RootLayoutProps) {
+export default function RootLayout({
+    children,
+    modal,
+}: Readonly<RootLayoutProps>) {
     return (
         <html lang="en">
-            <body className={`${geistSans.variable} ${geistMono.variable}`}>
+            <body className={roboto.variable} suppressHydrationWarning>
                 <TanStackProvider>
                     <Header />
                     <main>{children}</main>
